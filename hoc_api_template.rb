@@ -1,21 +1,21 @@
 
 def add_template_repository_to_source_path
-  if __FILE__ =~ %r{\Ahttps?://}
-    require "tmpdir"
-    source_paths.unshift(tempdir = Dir.mktmpdir("jumpstart-"))
-    at_exit { FileUtils.remove_entry(tempdir) }
-    git clone: [
-      "--quiet",
-      "https://github.com/excid3/jumpstart.git",
-      tempdir
-    ].map(&:shellescape).join(" ")
-
-    if (branch = __FILE__[%r{jumpstart/(.+)/template.rb}, 1])
-      Dir.chdir(tempdir) { git checkout: branch }
-    end
-  else
-    source_paths.unshift(File.dirname(__FILE__))
-  end
+  # if __FILE__ =~ %r{\Ahttps?://}
+  #   require "tmpdir"
+  #   source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
+  #   at_exit { FileUtils.remove_entry(tempdir) }
+  #   git clone: [
+  #     "--quiet",
+  #     "git://bitbucket.org/houseofcode/rails-template/raw/master/hoc_api_template.rb",
+  #     tempdir
+  #   ].map(&:shellescape).join(" ")
+  #
+  #   if (branch = __FILE__[%r{rails-template/raw/(.+)/hoc_api_template.rb}, 1])
+  #     Dir.chdir(tempdir) { git checkout: branch }
+  #   end
+  # else
+  #   source_paths.unshift(File.dirname(__FILE__))
+  # end
 end
 
 
