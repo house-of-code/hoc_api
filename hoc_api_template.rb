@@ -14,7 +14,7 @@ def add_template_repository_to_source_path
   #     Dir.chdir(tempdir) { git checkout: branch }
   #   end
   # else
-  #   source_paths.unshift(File.dirname(__FILE__))
+     source_paths.unshift(File.dirname(__FILE__))
   # end
 end
 
@@ -40,8 +40,9 @@ def set_application_name
 end
 
 def add_users
-  if yes?("Install user? (y/n)\n")
 
+  if yes?("Install user model? (y/n)\n")
+    puts "The user model will contain fields for credentials; password_digest and email. Extra fields can be added.\n"
     user_fields = ask("\nEnter the extra fields for the user model.\nEg. name:string address:string age:integer:\n")
     use_notifications = yes?("\nInstall hoc_notifications? (y/n)\n")
     directory "templates/users/app", "app", force: true
