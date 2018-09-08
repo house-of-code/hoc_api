@@ -7,18 +7,18 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     @current_user = User.new(user_params)
     if @current_user.save
       @authentication_token = @current_user.authentication_token
-      render_result({authentication_token: @authentication_token, user: @current_user.as_api_response(:basic) })
+      render_result({authentication_token: @authentication_token, user: @current_user.as_api_response(:basic) }, :created)
     else
       render_error(@current_user.errors.full_messages.first)
     end
   end
 
-  # GET /api/v1/users/
+  # GET /api/v1/profile/
   def show
     render_result(@current_user.as_api_response(:basic))
   end
 
-  # PATCH /api/v1/users/
+  # PATCH /api/v1/profile/
   def update
     if @current_user.update(user_params)
       render_result(@current_user.as_api_response(:basic))
@@ -27,7 +27,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     end
   end
 
-  # DELETE /api/v1/users
+  # DELETE /api/v1/profile
   def destroy
     if @current_user.destroy
       render_nothing(:deleted)
@@ -36,7 +36,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     end
   end
 
-  # POST /api/v1/users/add_device
+  # POST /api/v1/profile/add_device
   def add_device
     if @current_user.add_device(device_params)
       render_nothing
@@ -48,7 +48,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   private
 
   def user_params
-    params.require(:user).permit!
+    params.require(:profile).permit!
   end
 
   def device_params

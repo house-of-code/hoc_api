@@ -7,12 +7,11 @@ module HocNotifications
       template.add :title
       template.add :message
       template.add :action
-      template.add :sender
+      template.add :sender_id
       template.add :sender_type
-      template.add :notifiable
+      template.add :notifiable_id
       template.add :notifiable_type
       template.add :data
-      template.add :recipient
     end
 
 

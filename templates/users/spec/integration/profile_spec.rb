@@ -1,0 +1,95 @@
+require 'swagger_helper'
+describe 'House of Code API' do
+  path '/api/v1/profile' do
+    post 'creates a profile' do
+      tags 'Profile'
+      description "Creates a profile"
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :profile, in: :body, schema: {
+          '$ref' => '#/definitions/profile_input'
+      }
+
+      response '201', 'Profile created' do
+        schema '$ref' => '#/definitions/session'
+        run_test!
+      end
+      response '401', 'Not authorized' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+    end
+
+    put 'updates a profile' do
+      tags 'Profile'
+      description "Updates a profile"
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :profile, in: :body, schema: {
+          '$ref' => '#/definitions/profile_input'
+      }
+
+      response '201', 'Profile updated' do
+        schema '$ref' => '#/definitions/profile'
+        run_test!
+      end
+      response '401', 'Not authorized' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+    end
+
+    get 'Get profile' do
+      tags 'Profile'
+      description "Gets profile"
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :Authorization, :in => :header, required: true, :type => :string
+      response '200', 'Profile' do
+        schema '$ref' => '#/definitions/profile'
+        run_test!
+      end
+      response '401', 'Not authorized' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+    end
+
+    delete 'Delete a profile' do
+      tags 'Profile'
+      description "Deletes a profile"
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :Authorization, :in => :header, required: true, :type => :string
+      response '200', 'Profile deleted' do
+        run_test!
+      end
+      response '401', 'Not authorized' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+    end
+  end
+  path '/api/v1/profile/add_device' do
+    post 'Saves a push token for profile' do
+      tags 'Profile'
+      consumes 'application/json'
+      parameter name: :Authorization, :in => :header, required: true, :type => :string
+      parameter name: :device, in: :body, schema: {
+          '$ref' => '#/definitions/device'
+      }
+      response '200', 'ok' do
+        examples 'application/json' => { }
+        run_test!
+      end
+      response 422, 'invalid request' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+      response '401', 'Not authorized' do
+        schema '$ref' => '#/definitions/error'
+        run_test!
+      end
+    end
+  end
+end

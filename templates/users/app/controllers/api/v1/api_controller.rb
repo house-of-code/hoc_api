@@ -4,7 +4,7 @@ class Api::V1::ApiController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   attr_reader :current_user
 
-  def render_result(json, status)
+  def render_result(json, status = :ok)
     render json: json, status: status
   end
 
