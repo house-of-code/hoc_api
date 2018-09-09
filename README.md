@@ -13,6 +13,11 @@ This template can be used for creating a new app with an api defined for authent
 * simple_command
 * rack-cors (can be omitted)
 * pundit (can be omitted)
+* annotate
+* awesome_print
+* rubocop
+* better_errors
+* brakeman
 
 ## Usage
 
@@ -21,8 +26,8 @@ This template can be used for creating a new app with an api defined for authent
 
 
 
-        $ rails new app_name --api -d postgresql -m path/to/repo/hoc_api_template.rb    
+        $ rails new app_name --api -d postgresql -q -m path/to/repo/hoc_api_template.rb    
 
 
 
-This will create a new api-only rails app with postgresql as database using the hoc_api_template.rb
+This will create a new api-only rails app with postgresql as database using the hoc_api_template.rb. the `-q` options hide the very verbose output from rails generation

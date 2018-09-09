@@ -1,5 +1,6 @@
 def run_template
 
+  add_template_repository_to_source_path
   hr_line
   info "Welcome to House of Code' Ruby on Rails template generator."
   hr_line(true)
@@ -7,15 +8,13 @@ def run_template
 
   # Ask questions up front...
   if install_user?
+    add_user_name?
     profile_extras
     install_notifications?
   end
   enable_cors?
   enable_pundit?
 
-  info "reading files"
-  add_template_repository_to_source_path
-  
   info "adding gems"
   apply("applies/gems.rb")
 
@@ -148,7 +147,7 @@ def run_with_clean_bundler_env(cmd)
               run(cmd)
             end
   unless success
-    error "Command failed, exiting: #{cmd}"
+    error "Command failed, exiting: #{cmd}", :red
     exit(1)
   end
 end
@@ -175,16 +174,24 @@ def install_notifications?
 
 end
 
+def add_user_name?
+  return @add_user_name if defined? @add_user_name
+  hr_line
+  info "Would you like the user model to have a name field?"
+  hr_line(true)
+  @add_user_name = ask_with_default("Add name field to user? (y/n)", :cyan, "y") =~ /^y(es)?/i
+end
+
 def profile_extras
   return @profile_extras if defined? @profile_extras
   hr_line
   info "Extra fields for user model."
   info "The user model contains the following fields per default:"
-  warning "email and password_digest"
+  warning "email" + (", name" if add_user_name?) + "and password_digest"
   info "Example: "
-  say("name:string address:string age:integer phone:string:index", :bold)
+  say("address:string age:integer phone:string:index", :bold)
   hr_line(true)
-  @profile_extras = ask_with_default("Enter the extra fields for the user model?", :cyan, "")
+  @profile_extras = ("name:string:index" if add_user_name?) + ask_with_default("Enter the extra fields for the user model?", :cyan)
 end
 
 def enable_pundit?
@@ -210,9 +217,11 @@ end
 ###
 
 # Creates a question with default value
-def ask_with_default(question, color, default)
+def ask_with_default(question, color, default = "")
   return default unless $stdin.tty?
-  question = (question.split("?") << " [#{default}]?").join
+  unless default.strip.empty?
+    question = (question.split("?") << " [#{default}]?").join
+  end
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer
 end

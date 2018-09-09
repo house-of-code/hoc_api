@@ -1,10 +1,11 @@
 return unless install_user?
 
 info "Installing user model"
-
 generate "acts_as_hoc_user:hoc_user user #{profile_extras}"
+
 info "installing acts_as_hoc_pushable"
 generate 'acts_as_hoc_pushable:install'
+
 info "installing controllers"
 directory "templates/users/app", "app", force: true
 directory "templates/users/config", "config", force: true
@@ -23,16 +24,8 @@ insert_into_file 'app/models/user.rb', after: 'acts_as_hoc_user' do
   ACTS
 end
 
-# Add authentication methods for api_controller.rb
-info "adds authentication method to api controller"
+# Add authentication methods for api_controller.rb and inject fields to profile controller permitted params
 apply("applies/users/api_controller.rb")
-
-
-# Permit user fields in controller
-info "updates profile controller"
-gsub_file "app/controllers/api/v1/profiles_controller.rb",
-  "params.require(:profile).permit!",
-  "params.require(:profile).permit(:email, :password, :password_confirmation, #{user_field_names.join(",")})"
 
 info "Generate API documentation for authentication and profile"
 # Create api documentation
