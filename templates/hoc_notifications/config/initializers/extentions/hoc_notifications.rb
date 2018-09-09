@@ -1,3 +1,4 @@
+require 'hoc_notifications/active_record/hoc_notification.rb'
 module HocNotifications
   class HocNotification < ActiveRecord::Base
     acts_as_api

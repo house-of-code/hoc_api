@@ -136,8 +136,9 @@ end
 
 def run_rubocop_autocorrections
   info "Adding rubocop and running auto corrections"
-  template "templates/rubocop/rubocop.yml", ".rubocop.yml"
-  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  template "templates/rubocop/rubocop.yml", "rubocop.yml"
+  #run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  run_with_clean_bundler_env "bin/rubocop -a --fail-level A  || true"
 end
 
 def run_with_clean_bundler_env(cmd)

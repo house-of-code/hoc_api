@@ -8,6 +8,7 @@ AllCops:
     - config/boot.rb
     - config/environment.rb
     - config/initializers/version.rb
+    - config/initializers/extensions/*
     - db/schema.rb
     - "node_modules/**/*"
     - "bower_components/**/*"
@@ -59,12 +60,13 @@ Rails:
 Rails/ApplicationRecord:
   Exclude:
     - "db/migrate/**"
-
+    - "config/initializers/extensions/hoc_notifications.rb"
 Rails/RefuteMethods:
   Enabled: false
 
 Rails/Validation:
   Enabled: false
+
 
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
