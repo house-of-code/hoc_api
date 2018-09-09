@@ -1,0 +1,88 @@
+# <%= app_name %>
+
+This is a Rails <%= Rails::VERSION::MAJOR %> app.
+
+This app was created by the [hoc_api] template and is born with the following gems.
+
+* [acts_as_api]
+* [will_paginate]
+* [rswag]
+* [acts_as_hoc_user]
+* [acts_as_hoc_pushable]
+* [hoc_notifications]
+* [simple_command]
+<% if enable_pundit? -%>
+* [pundit]
+<% end -%>
+<% if enable_cors? -%>
+* rack-cors
+<% end -%>
+* Developement gems
+  * rspec-rails
+  * [annotate]
+  * [awesome_print]
+  * [rubocop]
+  * [better_errors]
+  * [brakeman]
+
+
+
+## Documentation
+
+This README describes the purpose of this repository and how to set up a development environment.
+
+## API Documetation
+
+The api documentation can be found at `localhost:3000/api-docs`
+
+## Prerequisites
+
+This project requires:
+
+* Ruby <%= RUBY_VERSION %>, preferably managed using [rbenv][]
+* PostgreSQL must be installed and accepting connections
+
+On a Mac, you can obtain all of the above packages using [Homebrew][].
+
+If you need help setting up a Ruby development environment, check out this [Rails OS X Setup Guide](https://mattbrictson.com/rails-osx-setup-guide).
+
+## Getting started
+
+Install used gems by calling:
+
+    $ bundler install
+
+Create database by calling:
+
+    $ rails db:create
+
+Migrate database by calling:
+
+    $ rails db:migrate
+
+Seed database by calling:
+
+    $ rails db:seed
+
+### Run it!
+
+To run the application locally:
+
+    $ rails s
+
+[rbenv]:https://github.com/sstephenson/rbenv
+[Homebrew]:http://brew.sh
+[hoc_api]:http:https://bitbucket.org/houseofcode/rails-template/src/master/
+[acts_as_api]:http://www.christianbaeuerlein.com/acts_as_api/
+[will_paginate]:https://github.com/mislav/will_paginate
+[rswag]:https://github.com/domaindrivendev/rswag
+[acts_as_hoc_user]:https://github.com/house-of-code/acts_as_hoc_user
+[acts_as_hoc_pushable]:https://github.com/house-of-code/acts_as_hoc_pushable
+[hoc_notifications]:https://github.com/house-of-code/hoc_notifications
+[simple_command]:https://github.com/nebulab/simple_command
+[pundit]:https://github.com/varvet/pundit
+[annotate]:https://github.com/ctran/annotate_models
+[awesome_print]:https://github.com/awesome-print/awesome_print
+[rubocop]:https://github.com/rubocop-hq/rubocop
+[better_errors]:https://github.com/BetterErrors/better_errors
+[brakeman]:https://github.com/presidentbeef/brakeman
