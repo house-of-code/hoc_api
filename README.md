@@ -11,6 +11,8 @@ This template can be used for creating a new app with an api defined for authent
 * acts_as_hoc_pushable
 * hoc_notifications
 * simple_command
+* rack-cors (can be omitted)
+* pundit (can be omitted)
 
 ## Usage
 
@@ -20,7 +22,7 @@ This template can be used for creating a new app with an api defined for authent
 
 
         $ rails new app_name --api -d postgresql -m path/to/repo/hoc_api_template.rb    
-    
+
 
 
 This will create a new api-only rails app with postgresql as database using the hoc_api_template.rb

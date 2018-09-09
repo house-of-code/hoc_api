@@ -1,9 +1,16 @@
 class Api::V1::ApiController < ApplicationController
+  # includes
   include ActsAsApi::Rendering
-  before_action :authenticate_request
-  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
-  attr_reader :current_user
 
+  # before_actions
+
+  # rescues
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+
+  # attrs
+
+
+  # methods
   def render_result(json, status = :ok)
     render json: json, status: status
   end
@@ -22,10 +29,5 @@ class Api::V1::ApiController < ApplicationController
 
   def render_error(err, status = :unprocessable_entity)
     render json: { status: status, error: err }, status: status
-  end
-
-  def authenticate_request
-    @current_user = User.authenticate_with_http_headers(request.headers)
-    render_not_authorized unless @current_user
   end
 end
