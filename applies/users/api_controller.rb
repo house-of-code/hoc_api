@@ -23,8 +23,8 @@ insert_into_file 'app/controllers/api/v1/api_controller.rb', after: '# attrs' do
   API_CONTROLLER_ATTRS
 end
 
-# Permit user fields in controller
-info "updates profile controller"
-gsub_file "app/controllers/api/v1/profiles_controller.rb",
-  "params.require(:profile).permit!",
-  "params.require(:profile).permit(:email, :password, :password_confirmation, #{user_field_names.join(",")})"
+# # Permit user fields in controller
+# info "updates profile controller"
+# gsub_file "app/controllers/api/v1/profiles_controller.rb",
+#   "params.require(:profile).permit!",
+#   "params.require(:profile).permit(:email, :name, :password, :password_confirmation, #{user_field_names.join(",")})"

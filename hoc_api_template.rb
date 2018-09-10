@@ -8,12 +8,19 @@ def run_template
 
   # Ask questions up front...
   if install_user?
-    add_user_name?
-    profile_extras
+    if advanced_user_setup?
+      profile_extras
+    else
+      @profile_extras = "name:string:index"
+    end
     install_notifications?
   end
   enable_cors?
   enable_pundit?
+  if enable_admin?
+    admin_login
+    admin_password
+  end
 
   info "adding gems"
   apply("applies/gems.rb")
@@ -59,6 +66,9 @@ def run_template
     # Rakefile
     info "Adding to Rakefile"
     apply("applies/rakefile.rb")
+
+    # Administrative
+    apply("applies/admin.rb")
 
     # rubocup
     run_rubocop_autocorrections
@@ -137,8 +147,8 @@ end
 def run_rubocop_autocorrections
   info "Adding rubocop and running auto corrections"
   template "templates/rubocop/rubocop.yml", "rubocop.yml"
-  #run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
-  run_with_clean_bundler_env "bin/rubocop -a --fail-level A  || true"
+  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  #run_with_clean_bundler_env "bin/rubocop -a --fail-level A  || true"
 end
 
 def run_with_clean_bundler_env(cmd)
@@ -175,12 +185,13 @@ def install_notifications?
 
 end
 
-def add_user_name?
-  return @add_user_name if defined? @add_user_name
+def advanced_user_setup?
+  return @advanced_user_setup if defined? @advanced_user_setup
   hr_line
-  info "Would you like the user model to have a name field?"
+  info "You can customize the fields of the user model or leave them to the default:"
+  warning "email, password_digest, name"
   hr_line(true)
-  @add_user_name = ask_with_default("Add name field to user? (y/n)", :cyan, "y") =~ /^y(es)?/i
+  @advanced_user_setup = ask_with_default("Advanced user model setup? (y/n)", :cyan, "no") =~ /^y(es)?/i
 end
 
 def profile_extras
@@ -188,11 +199,11 @@ def profile_extras
   hr_line
   info "Extra fields for user model."
   info "The user model contains the following fields per default:"
-  warning "email" + (", name" if add_user_name?) + "and password_digest"
+  warning "email and password_digest"
   info "Example: "
   say("address:string age:integer phone:string:index", :bold)
   hr_line(true)
-  @profile_extras = ("name:string:index" if add_user_name?) + ask_with_default("Enter the extra fields for the user model?", :cyan)
+  @profile_extras = ask_with_default("Enter the extra fields for the user model?", :cyan)
 end
 
 def enable_pundit?
@@ -211,7 +222,29 @@ def enable_cors?
   @enable_cors = ask_with_default("Enable CORS? (y/n)", :cyan, "no") =~ /^y(es)?/i
 end
 
+def enable_admin?
+  return @enable_admin if defined? @enable_admin
+  hr_line
+  info "Administration module"
+  hr_line(true)
+  @enable_admin = ask_with_default("Enable admin? (y/n)", :cyan, "y") =~ /^y(es)?/i
+end
 
+def admin_login
+  return @admin_login if defined? @admin_login
+  hr_line
+  info "Enter login name for admin interface"
+  hr_line(true)
+  @admin_login = ask_with_default("Login?", :cyan, "admin")
+end
+
+def admin_password
+  return @admin_password if defined? @admin_password
+  hr_line
+  info "Enter login password for admin interface"
+  hr_line(true)
+  @admin_password = ask_with_default("Password?", :cyan, "")
+end
 
 ###
 ### TEXT HELPERS

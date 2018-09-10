@@ -1,6 +1,7 @@
 return unless install_user?
 
 info "Installing user model"
+
 generate "acts_as_hoc_user:hoc_user user #{profile_extras}"
 
 info "installing acts_as_hoc_pushable"

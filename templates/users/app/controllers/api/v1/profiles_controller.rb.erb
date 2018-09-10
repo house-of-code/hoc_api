@@ -48,7 +48,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   private
 
   def user_params
-    params.require(:profile).permit!
+    params.require(:profile).permit(:email, :password, :password_confirmation, <%= user_field_names.join(",") -%>)
   end
 
   def device_params

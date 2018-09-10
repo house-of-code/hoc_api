@@ -1,7 +1,7 @@
 # Easy json generation
 gem 'acts_as_api'
 # Makes it possible to paginate results
-gem 'will_paginate'
+#gem 'will_paginate'
 # Testing
 gem 'rspec'
 # API documentation and testing
@@ -21,6 +21,9 @@ gem 'pundit' if enable_pundit?
 
 # Cors
 gem 'rack-cors' if enable_cors?
+
+# Trestle admin interface
+gem 'trestle' if enable_admin?
 
 gem_group :development, :test do
   # Testing
