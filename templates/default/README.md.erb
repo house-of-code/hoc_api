@@ -1,11 +1,10 @@
 # <%= app_name %>
 
-This is a Rails <%= Rails::VERSION::MAJOR %> app.
+This is a Rails <%= Rails::VERSION::MAJOR %>.<%= Rails::VERSION::MINOR %> app.
 
 This app was created by the [hoc_api] template and is born with the following gems.
 
 * [acts_as_api]
-* [will_paginate]
 * [rswag]
 * [acts_as_hoc_user]
 * [acts_as_hoc_pushable]
@@ -17,6 +16,15 @@ This app was created by the [hoc_api] template and is born with the following ge
 <% if enable_cors? -%>
 * rack-cors
 <% end -%>
+<% if enable_admin? -%>
+* [trestle]
+<% end -%>
+<% if enable_user_avatar? -%>
+* [mini_magick]
+* [aws-sdk-s3]
+<% end -%>
+
+
 * Developement gems
   * rspec-rails
   * [annotate]
@@ -38,7 +46,7 @@ The api documentation can be found at `localhost:3000/api-docs`
 ## Prerequisites
 
 This project requires:
-
+* Rails 5.2
 * Ruby <%= RUBY_VERSION %>, preferably managed using [rbenv][]
 * PostgreSQL must be installed and accepting connections
 
@@ -86,3 +94,6 @@ To run the application locally:
 [rubocop]:https://github.com/rubocop-hq/rubocop
 [better_errors]:https://github.com/BetterErrors/better_errors
 [brakeman]:https://github.com/presidentbeef/brakeman
+[trestle]:https://github.com/TrestleAdmin/trestle
+[mini_magick]:https://github.com/minimagick/minimagick
+[aws-sdk-s3]:https://github.com/aws/aws-sdk-ruby
