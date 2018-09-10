@@ -92,4 +92,29 @@ describe 'House of Code API' do
       end
     end
   end
+  <% if enable_user_avatar? -%>
+    path '/api/v1/profile/set_avatar' do
+      post 'Sets an avatar for profile' do
+        tags 'Profile'
+        consumes 'application/json'
+        parameter name: :Authorization, :in => :header, required: true, :type => :string
+        parameter name: :profile, in: :body, schema: {
+            '$ref' => '#/definitions/avatar_input'
+        }
+        response '200', 'ok' do
+          examples 'application/json' => { }
+          run_test!
+        end
+        response 422, 'invalid request' do
+          schema '$ref' => '#/definitions/error'
+          run_test!
+        end
+        response '401', 'Not authorized' do
+          schema '$ref' => '#/definitions/error'
+          run_test!
+        end
+      end
+    end
+  <% end-%>
+
 end

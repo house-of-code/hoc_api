@@ -6,8 +6,16 @@ Rails.application.routes.draw do
       resource :authentication, only: [:create, :destroy]
       resource :profile, only: [:create, :show, :update, :destroy] do
         post :add_device, on: :collection
-
+        <% if enable_user_avatar? -%>
+        post :set_avatar, on: :collection
+        <% end -%>
       end
+      <% if install_notifications? -%>
+      resources :notifications, only: [:index, :show] do
+        put :mark_as_seen, on: :collection
+        put :mark_as_seen, on: :member
+      end
+      <% end -%>
       # add your routes here.
 
     end

@@ -25,6 +25,10 @@ gem 'rack-cors' if enable_cors?
 # Trestle admin interface
 gem 'trestle' if enable_admin?
 
+if enable_user_avatar?
+  gem 'mini_magick'
+  gem 'aws-sdk-s3', require: false
+end
 gem_group :development, :test do
   # Testing
   gem "rspec-rails"

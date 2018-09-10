@@ -11,8 +11,9 @@ Trestle.configure do |config|
 
   config.before_action do |_controller|
     authenticate_or_request_with_http_basic(Trestle.config.site_title) do |name, password|
-      ActiveSupport::SecurityUtils.variable_size_secure_compare(name, Rails.application.config.admin_login) &
-        ActiveSupport::SecurityUtils.variable_size_secure_compare(password, Rails.application.config.admin_password)
+      
+      ActiveSupport::SecurityUtils.secure_compare(name, Rails.application.config.admin_login) &
+        ActiveSupport::SecurityUtils.secure_compare(password, Rails.application.config.admin_password)
     end
   end
 

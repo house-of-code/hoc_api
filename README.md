@@ -2,6 +2,9 @@
 
 This template can be used for creating a new app with an api defined for authentication, profile and notifications
 
+# Minimum requirements
+* **Rails 5.2**
+
 ## Gems included
 * acts_as_api
 * will_paginate

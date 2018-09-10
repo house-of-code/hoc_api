@@ -1,2 +1,2 @@
-info "Stopping spring"
+info "Stopping spring."
 run 'spring stop'

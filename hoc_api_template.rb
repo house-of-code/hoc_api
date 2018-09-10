@@ -6,12 +6,14 @@ def run_template
   hr_line(true)
 
 
-  # Ask questions up front...
+  # Ask questions up front so we have the values for templates...
   if install_user?
     if advanced_user_setup?
       profile_extras
     else
       @profile_extras = "name:string:index"
+    end
+    if enable_user_avatar?
     end
     install_notifications?
   end
@@ -51,7 +53,7 @@ def run_template
     apply("applies/pundit_setup.rb")
 
     # root route
-    info "Adds route for default page"
+    info "Adds route for default page."
     route "root to: 'home#index'"
 
     # Migrate
@@ -64,7 +66,7 @@ def run_template
     binstub_setup
 
     # Rakefile
-    info "Adding to Rakefile"
+    info "Adding to Rakefile."
     apply("applies/rakefile.rb")
 
     # Administrative
@@ -134,10 +136,19 @@ def user_field_names
   }
 end
 
+def profile_definitions_spec
+
+  return @profile_definitions_spec if defined? @profile_definitions_spec
+  @profile_definitions_spec = ""
+  splitted_user_fields.each do |field|
+    @profile_definitions_spec << "#{field[:name]}: { type: '#{field[:type]}' },"
+  end
+  @profile_definitions_spec
+end
 
 
 def binstub_setup
-  info "Runs bundle binstubs"
+  info "Runs bundle binstubs."
   binstubs = %w[
     annotate bundler rubocop brakeman
   ]
@@ -145,7 +156,7 @@ def binstub_setup
 end
 
 def run_rubocop_autocorrections
-  info "Adding rubocop and running auto corrections"
+  info "Adding rubocop and running auto corrections."
   template "templates/rubocop/rubocop.yml", "rubocop.yml"
   run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
   #run_with_clean_bundler_env "bin/rubocop -a --fail-level A  || true"
@@ -170,7 +181,7 @@ end
 def install_user?
   return @install_user if defined? @install_user
   hr_line
-  info "User model and user authentication and profile api controller"
+  info "User model and user authentication and profile api controller."
   info "A user model will contain fields for credentials; password_digest and email. Extra fields can be added."
   hr_line(true)
   @install_user = ask_with_default("Install user model, authentication and profile controllers? (y/n)", :cyan, "y") =~ /^y(es)?/i
@@ -204,6 +215,14 @@ def profile_extras
   say("address:string age:integer phone:string:index", :bold)
   hr_line(true)
   @profile_extras = ask_with_default("Enter the extra fields for the user model?", :cyan)
+end
+
+def enable_user_avatar?
+  return @enable_user_avatar if defined? @enable_user_avatar
+  hr_line
+  info "Add an avatar to the user model"
+  hr_line(true)
+  @enable_user_avatar = ask_with_default("Enable avatar for user model? (y/n)", :cyan, "y") =~ /^y(es)?/i
 end
 
 def enable_pundit?

@@ -45,10 +45,21 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     end
   end
 
+  <% if enable_user_avatar? -%>
+  # POST /api/v1/profile/set_avatar
+  def set_avatar
+    if @current_user.update!(avatar_contents: user_params[:avatar_contents], avatar_name: user_params[:avatar_name])
+
+      render_nothing
+    else
+      render_error(@current_user.errors.full_messages.first)
+    end
+  end
+  <% end -%>
   private
 
   def user_params
-    params.require(:profile).permit(:email, :password, :password_confirmation, <%= user_field_names.join(",") -%>)
+    params.require(:profile).permit(:email, :password, :password_confirmation, <%= user_field_names.join(", ") -%> <%= ", :avatar_contents, :avatar_name" if enable_user_avatar? -%> )
   end
 
   def device_params

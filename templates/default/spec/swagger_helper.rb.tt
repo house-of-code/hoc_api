@@ -1,0 +1,128 @@
+require 'rails_helper'
+
+RSpec.configure do |config|
+  # Specify a root folder where Swagger JSON files are generated
+  # NOTE: If you're using the rswag-api to serve API descriptions, you'll need
+  # to ensure that it's configured to serve Swagger from the same folder
+  config.swagger_root = Rails.root.to_s + '/swagger'
+  config.swagger_docs = {
+    'v1/swagger.json' => {
+      swagger: '2.0',
+      info: {
+        title: 'House of Code Api V1',
+        version: 'v1',
+        description: 'API documentation',
+        contact: {
+          name: 'House of Code ApS',
+          email: 'info@houseofcode.io',
+          url: 'https://houseofcode.io'
+        }
+      },
+
+      #host: 'url_to_where',
+      #host: 'localhost:3000',
+      paths: {},
+      definitions: {
+        # add your definitions here.
+        <% if install_user? -%>
+        profile_input: {
+          description: 'This model contains information for creating an user',
+          type: 'object',
+          properties: {
+            email: { type: 'string', format: 'email' },
+            password: { type: 'string', format: 'password' },
+            password_confirmation: { type: 'string', format: 'password' },
+            <% if enable_user_avatar? -%>
+            avatar_name: { type: 'string' },
+            avatar_contents: { type: 'string' },
+            <% end -%>
+            <%= profile_definitions_spec -%>
+          },
+          required: ['email']
+        },
+        profile: {
+          description: 'This model contains information about an user',
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            email: { type: 'string', format: 'email' },
+            <%= profile_definitions_spec -%>
+            <% if enable_user_avatar? -%>
+            avatar_url: { type: 'string' },
+            <% end -%>
+          }
+        },
+        device: {
+          description: 'This model contains information for adding a device to a profile',
+          type: 'object',
+          properties: {
+            token: { type: 'string' },
+            platform: { type: 'string', description: 'ios or android' },
+            platform_version: { type: 'string', description: 'eg. 9.3' },
+            push_environment: { type: 'string', description: 'production or debug' },
+          },
+          required: ['token', 'platform', 'platform_version', 'push_environment']
+        },
+        session_input: {
+          description: 'This model contains information for logging in an user',
+          type: 'object',
+          properties: {
+            password: { type: 'string', format: 'password' },
+            email: { type: 'string', format: 'email' },
+          },
+          required: ['password', 'email']
+        },
+        session: {
+          description: 'This model contains information for logging in an user',
+          type: 'object',
+          properties: {
+            authentication_token: { type: 'string' },
+            profile: { "$ref": "#/definitions/profile" },
+          },
+        },
+        <% if enable_user_avatar? -%>
+        avatar_input: {
+          description: 'This model contains information about setting an avatar for an user',
+          type: 'object',
+          properties: {
+            avatar_name: { type: 'string' },
+            avatar_contents: { type: 'string' },
+          }
+        },
+        <% end -%>
+        <% end -%>
+        <% if install_notifications? -%>
+        notification: {
+          description: 'This model contains information about a notification',
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            title: { type: 'string' },
+            message: { type: 'string' },
+            action: { type: 'string' },
+            sender_id: { type: 'integer' },
+            sender_type: { type: 'string' },
+            notifiable_id: { type: 'integer' },
+            notifiable_type: { type: 'string' },
+            data: { type: 'string', description: 'json with extra data' },
+          },
+        },
+        notifications: {
+          description: 'An array of notifications',
+            type: 'array',
+            items: { "$ref": "#/definitions/notification" },
+        },
+        <% end -%>
+
+        error: {
+          description: 'Error message',
+          type: 'object',
+          properties: {
+            status: { type: 'integer' },
+            error: { type: 'string' }
+          }
+        },
+      }
+    }
+  }
+end
