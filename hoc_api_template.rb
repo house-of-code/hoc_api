@@ -1,4 +1,8 @@
 def run_template
+  unless (Rails::VERSION::MAJOR > 5) || (Rails::VERSION::MAJOR == 5 && Rails::VERSION::MINOR >= 2)
+    say_error "This template requires minimum Rails 5.2"
+    die
+  end
 
   add_template_repository_to_source_path
   hr_line
@@ -284,7 +288,7 @@ def hr_line(extra_line = false)
   puts "\n" if extra_line
 end
 
-def error(text)
+def say_error(text)
   say(text, :red)
 end
 
