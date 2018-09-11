@@ -7,32 +7,46 @@ def run_template
   add_template_repository_to_source_path
   hr_line
   info "Welcome to House of Code' Ruby on Rails template generator."
+  say "#beAwesome", :red, :bolt
   hr_line(true)
 
 
   # Ask questions up front so we have the values for templates...
   if install_user?
+    # Install user
+
+    # Ask for features that depend on the user part
     if advanced_user_setup?
+      # Advanced setup let you decide the fields for the user model
       profile_extras
     else
+      # Else we gonna add a name field (with index) to the model
       @profile_extras = "name:string:index"
     end
     if enable_user_avatar?
+      # TODO: ask for which service to use for storage in production
     end
+    # Notifications?
     install_notifications?
   end
+  # CORS
   enable_cors?
+  # Pundit
   enable_pundit?
+  # Should we have an Admin module?
   if enable_admin?
+    # If yes - then ask for login credentials so we can protect the admin module
+    info "To protect the Administration Module, we need to setup credentials."
     admin_login
     admin_password
   end
 
-  info "adding gems"
+  info "Adding gems"
   apply("applies/gems.rb")
 
   hr_line
-  say("running bundle to install gems. This can take some time - grab a cup of coffee :-)", :yellow, :bold)
+  info "Running bundle to install gems."
+  say("This can take some time - grab a cup of coffee and continue being awesome :-)", :yellow, :bold)
   hr_line(true)
 
   after_bundle do
@@ -109,9 +123,11 @@ end
 
 def set_application_name
   # Add Application Name to Config
+  info "Set the application name. This can be changed later in config/application.rb"
   environment "config.application_name = Rails.application.class.parent_name"
 end
 
+# This is a helper to generate a apie_accessible from an array of field_names
 def api_accessible(name = "basic", field_names)
   api_accessible = "\n\tapi_accessible :#{name} do |t|\n"
   field_names.each do |field|
@@ -121,6 +137,7 @@ def api_accessible(name = "basic", field_names)
   api_accessible
 end
 
+# Split up field names of profile_extras which are on the form "name:type:index name1:type....""
 def splitted_user_fields
   return @splitted_fields if defined? @splitted_fields
   @splitted_fields = profile_extras.split(" ").map { |field|
@@ -133,6 +150,7 @@ def splitted_user_fields
   }
 end
 
+# User field names as symbols
 def user_field_names
   return @user_field_names if defined? @user_field_names
   @user_field_names = splitted_user_fields.map { |field|
@@ -140,8 +158,8 @@ def user_field_names
   }
 end
 
+# For swagger definiton for profile model
 def profile_definitions_spec
-
   return @profile_definitions_spec if defined? @profile_definitions_spec
   @profile_definitions_spec = ""
   splitted_user_fields.each do |field|
@@ -185,7 +203,9 @@ end
 def install_user?
   return @install_user if defined? @install_user
   hr_line
-  info "User model and user authentication and profile api controller."
+  info "Would you like to add an User system?"
+  info "This will consist of a User model, and api controllers for profile and authentication"
+  info "Also a system for holding devices and sending push messages will be added"
   info "A user model will contain fields for credentials; password_digest and email. Extra fields can be added."
   hr_line(true)
   @install_user = ask_with_default("Install user model, authentication and profile controllers? (y/n)", :cyan, "y") =~ /^y(es)?/i
@@ -194,7 +214,8 @@ end
 def install_notifications?
   return @install_notifications if defined? @install_notifications
   hr_line
-  info "Notification makes it easy to notify users."
+  info "Generate a notifications system?"
+  info "Notification makes it easy to notify a user"
   hr_line(true)
   @install_notifications = ask_with_default("Install hoc_notifications model and controllers? (y/n)", :cyan, "y") =~ /^y(es)?/i
 
@@ -203,8 +224,8 @@ end
 def advanced_user_setup?
   return @advanced_user_setup if defined? @advanced_user_setup
   hr_line
-  info "You can customize the fields of the user model or leave them to the default:"
-  warning "email, password_digest, name"
+  info "You can customize the fields of the user model or leave them to the default setup:"
+  warning "email:string:index, password_digest:string, name:string:index"
   hr_line(true)
   @advanced_user_setup = ask_with_default("Advanced user model setup? (y/n)", :cyan, "no") =~ /^y(es)?/i
 end
@@ -214,7 +235,7 @@ def profile_extras
   hr_line
   info "Extra fields for user model."
   info "The user model contains the following fields per default:"
-  warning "email and password_digest"
+  warning "email:string:index and password_digest:string"
   info "Example: "
   say("address:string age:integer phone:string:index", :bold)
   hr_line(true)
@@ -224,7 +245,8 @@ end
 def enable_user_avatar?
   return @enable_user_avatar if defined? @enable_user_avatar
   hr_line
-  info "Add an avatar to the user model"
+  info "Add an avatar to the user model?"
+  info "Uses ActiveStorage for storing. Different kind of storage engines are available: S3, Google, Azure, local etc."
   hr_line(true)
   @enable_user_avatar = ask_with_default("Enable avatar for user model? (y/n)", :cyan, "y") =~ /^y(es)?/i
 end
@@ -232,7 +254,7 @@ end
 def enable_pundit?
   return @enable_pundit if defined? @enable_pundit
   hr_line
-  info "Pundit for resource authentication"
+  info "Use Pundit for resource authentication?"
   hr_line(true)
   @enable_pundit = ask_with_default("Enable pundit? (y/n)", :cyan, "y") =~ /^y(es)?/i
 end
@@ -248,7 +270,8 @@ end
 def enable_admin?
   return @enable_admin if defined? @enable_admin
   hr_line
-  info "Administration module"
+  info "Install an Administration module?"
+  info "The administration module will be setup up with the actions for the user, devices and notifications"
   hr_line(true)
   @enable_admin = ask_with_default("Enable admin? (y/n)", :cyan, "y") =~ /^y(es)?/i
 end

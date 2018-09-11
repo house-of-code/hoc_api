@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_one_attached :avatar
   attr_accessor :avatar_contents
   attr_accessor :avatar_name
+  before_save :clear_avatar
   after_save :parse_avatar
   #validate :avatar_validations, on: :create
   <% end -%>
@@ -23,6 +24,13 @@ class User < ActiveRecord::Base
       Rails.application.routes.url_helpers.rails_blob_url(avatar, host: Rails.configuration.default_url_options[:host])
     else
       "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+    end
+  end
+
+  def clear_avatar
+    if remove_avatar == '1'
+      avatar_contents = nil
+      avatar.purge_later
     end
   end
 
@@ -44,6 +52,13 @@ class User < ActiveRecord::Base
       #FileUtils.rm("#{Rails.root}/tmp/images/#{filename}")
     end
   end
+
+  <% if install_notifications? -%>
+  # This method get called if a hoc notification is received
+  def handle_received_notification(hoc_notification)
+  end
+  <% end -%>
+
 
   private
 

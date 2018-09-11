@@ -7,7 +7,10 @@ Trestle.resource(:users) do
   end
 
   table do
-    column :name
+    <% if enable_user_avatar? -%>
+    column :avatar do |u| image_tag u.avatar_url, size: "30x30" end
+    <% end -%>
+    column :name if User.column_names.include? 'name'
     column :email
     column :ios_devices do |u| u.ios_devices.count end
     column :android_devices do |u| u.android_devices.count end
@@ -18,12 +21,16 @@ Trestle.resource(:users) do
 
   form do |user|
     tab :user do
-      text_field :name
+      text_field :name if User.column_names.include? 'name'
       email_field :email
       row do
         col(xs: 6) { password_field :password }
         col(xs: 6) { password_field :password_confirmation }
       end
+      <% if enable_user_avatar? -%>
+      file_field :avatar
+      check_box :remove_avatar
+      <% end -%>
     end
     tab :devices, badge: user.devices.count do
       table user.devices do

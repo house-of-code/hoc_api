@@ -15,6 +15,8 @@ gem 'hoc_notifications'
 # Service objects for rails
 gem 'simple_command'
 
+# Slim for html
+gem "slim-rails"
 
 # Resource authentication
 gem 'pundit' if enable_pundit?
