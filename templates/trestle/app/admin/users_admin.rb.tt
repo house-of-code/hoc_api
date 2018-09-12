@@ -8,7 +8,7 @@ Trestle.resource(:users) do
 
   table do
     <% if enable_user_avatar? -%>
-    column :avatar do |u| image_tag u.avatar_url, size: "30x30" end
+    column :avatar do |u| image_tag(u.avatar_url, size: "30x30") unless u.avatar_url.nil? end
     <% end -%>
     column :name if User.column_names.include? 'name'
     column :email
@@ -28,8 +28,11 @@ Trestle.resource(:users) do
         col(xs: 6) { password_field :password_confirmation }
       end
       <% if enable_user_avatar? -%>
-      file_field :avatar
-      check_box :remove_avatar
+      form_group :avatar, help: "Upload a file less than 2MB." do
+        concat(image_tag(instance.avatar_url, size: "100x100")) unless instance.avatar_url.nil?
+        raw_file_field :avatar
+        check_box :remove_avatar if instance.avatar_url
+      end
       <% end -%>
     end
     tab :devices, badge: user.devices.count do

@@ -2,38 +2,60 @@
 
 This is a Rails <%= Rails::VERSION::MAJOR %>.<%= Rails::VERSION::MINOR %> app.
 
-This app was created by the [hoc_api] template and is born with the following gems.
+This app was created by the [hoc_api] template and is born with the following gem packages.
 
+## Gem packages
+### App features
 * [acts_as_api]
+  Makes creating XML/JSON responses in Rails 3, 4 and 5 easy and fun.
 * [rswag]
+  rspec-rails is a testing framework for Rails 3.x, 4.x and 5.x.
+<% if install_user? -%>
 * [acts_as_hoc_user]
+  User model with authentication methods (JWT)
 * [acts_as_hoc_pushable]
+  Adds devices to model and possiblity to send push messages (FCM)
+<% end -%>  
+<% if enable_user_avatar? -%>
+* [acts_as_hoc_avatarable]
+  Add avatar to model with ActiveStorage.
+* [aws-sdk-s3]
+  The official AWS S3 SDK for Ruby.
+<% end -%>
+<% if install_notifications? -%>
 * [hoc_notifications]
+  Notification system for ActiveRecord models
+<% end -%>
 * [simple_command]
-<% if enable_pundit? -%>
-* [pundit]
-<% end -%>
+  Service Objects for rails
 <% if enable_cors? -%>
-* rack-cors
+* rack-cors (can be omitted)
+  Provides support for Cross-Origin Resource Sharing (CORS) for Rack compatible web applications.
 <% end -%>
+<% if enable_pundit? -%>
+* [pundit] (can be omitted)
+  Pundit provides a set of helpers which guide you in leveraging regular Ruby classes and object oriented design patterns to build a simple, robust and scaleable authorization system.
+<% end -%>
+* [slim-rails]
+  slim-rails provides Slim generators for Rails 3+. It was based on haml-rails and it does basically the same:
 <% if enable_admin? -%>
 * [trestle]
-<% end -%>
-<% if enable_user_avatar? -%>
-* [mini_magick]
-* [aws-sdk-s3]
+  A modern, responsive admin framework for Ruby on Rails
 <% end -%>
 
-
-* Developement gems
-  * rspec-rails
-  * [annotate]
-  * [awesome_print]
-  * [rubocop]
-  * [better_errors]
-  * [brakeman]
-
-
+### Developement gems
+* [rspec-rails]
+  rspec-rails is a testing framework for Rails 3.x, 4.x and 5.x.
+* [better_errors]
+  Better Errors replaces the standard Rails error page with a much better and more useful error page.
+* [brakeman]
+  Brakeman is a static analysis tool which checks Ruby on Rails applications for security vulnerabilities.
+* [annotate]
+  Annotates models with summary of current schema
+* [awesome_print]
+  The awesome alternative to puts
+* [rubocop]
+   A Ruby static code analyzer and code formatter.
 
 ## Documentation
 
@@ -43,6 +65,11 @@ This README describes the purpose of this repository and how to set up a develop
 
 The api documentation can be found at `localhost:3000/api-docs`
 
+<% if enable_admin? -%>
+## Administration interface
+Go to `localhost:3000/admin`
+
+<% end -%>
 ## Prerequisites
 
 This project requires:
@@ -97,3 +124,4 @@ To run the application locally:
 [trestle]:https://github.com/TrestleAdmin/trestle
 [mini_magick]:https://github.com/minimagick/minimagick
 [aws-sdk-s3]:https://github.com/aws/aws-sdk-ruby
+[acts_as_hoc_avatarable]:https://github.com/house-of-code/acts_as_hoc_avatarable

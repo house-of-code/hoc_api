@@ -191,7 +191,7 @@ def run_with_clean_bundler_env(cmd)
               run(cmd)
             end
   unless success
-    error "Command failed, exiting: #{cmd}", :red
+    error "Command failed, exiting: #{cmd}"
     exit(1)
   end
 end

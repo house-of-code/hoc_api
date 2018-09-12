@@ -28,7 +28,7 @@ gem 'rack-cors' if enable_cors?
 gem 'trestle' if enable_admin?
 
 if enable_user_avatar?
-  gem 'mini_magick'
+  gem 'acts_as_hoc_avatarable'
   gem 'aws-sdk-s3', require: false
 end
 gem_group :development, :test do
