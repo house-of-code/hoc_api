@@ -102,6 +102,9 @@ def run_template
   end
 end
 
+require "fileutils"
+require "shellwords"
+
 def add_template_repository_to_source_path
   if __FILE__ =~ %r{\Ahttps?://}
     require "tmpdir"
