@@ -30,6 +30,7 @@ RSpec.configure do |config|
           type: 'object',
           properties: {
             email: { type: 'string', format: 'email' },
+            name: { type: 'string' },
             password: { type: 'string', format: 'password' },
             password_confirmation: { type: 'string', format: 'password' },
             <% if enable_user_avatar? -%>
@@ -38,7 +39,7 @@ RSpec.configure do |config|
             <% end -%>
             <%= profile_definitions_spec -%>
           },
-          required: ['email']
+          required: ['email', 'name']
         },
         profile: {
           description: 'This model contains information about an user',
@@ -46,6 +47,7 @@ RSpec.configure do |config|
           properties: {
             id: { type: 'integer' },
             email: { type: 'string', format: 'email' },
+            name: { type: 'string' },
             <%= profile_definitions_spec -%>
             <% if enable_user_avatar? -%>
             avatar_url: { type: 'string' },

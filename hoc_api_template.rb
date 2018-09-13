@@ -19,9 +19,6 @@ def run_template
     if advanced_user_setup?
       # Advanced setup let you decide the fields for the user model
       profile_extras
-    else
-      # Else we gonna add a name field (with index) to the model
-      @profile_extras = "name:string:index"
     end
     if enable_user_avatar?
       # TODO: ask for which service to use for storage in production
@@ -140,6 +137,7 @@ end
 # Split up field names of profile_extras which are on the form "name:type:index name1:type....""
 def splitted_user_fields
   return @splitted_fields if defined? @splitted_fields
+  return {} if profile_extras.nil?
   @splitted_fields = profile_extras.split(" ").map { |field|
     {
       name: "#{field.split(":")[0]}",
@@ -206,7 +204,7 @@ def install_user?
   info "Would you like to add an User system?"
   info "This will consist of a User model, and api controllers for profile and authentication"
   info "Also a system for holding devices and sending push messages will be added"
-  info "A user model will contain fields for credentials; password_digest and email. Extra fields can be added."
+  info "A user model will contain fields for credentials; password_digest and email and a name field. Extra fields can be added."
   hr_line(true)
   @install_user = ask_with_default("Install user model, authentication and profile controllers? (y/n)", :cyan, "y") =~ /^y(es)?/i
 end
@@ -231,11 +229,14 @@ def advanced_user_setup?
 end
 
 def profile_extras
+  unless advanced_user_setup?
+    return nil
+  end
   return @profile_extras if defined? @profile_extras
   hr_line
   info "Extra fields for user model."
   info "The user model contains the following fields per default:"
-  warning "email:string:index and password_digest:string"
+  warning "email:string:index, name:strig and password_digest:string"
   info "Example: "
   say("address:string age:integer phone:string:index", :bold)
   hr_line(true)
@@ -297,7 +298,7 @@ end
 ###
 
 # Creates a question with default value
-def ask_with_default(question, color, default = "")
+def ask_with_default(question, color, default = '')
   return default unless $stdin.tty?
   unless default.strip.empty?
     question = (question.split("?") << " [#{default}]?").join

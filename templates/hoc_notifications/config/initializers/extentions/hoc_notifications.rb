@@ -13,6 +13,9 @@ module HocNotifications
       template.add :notifiable_id
       template.add :notifiable_type
       template.add :data
+      template.add :seen_at
+      template.add :updated_at
+      template.add :created_at
     end
 
 

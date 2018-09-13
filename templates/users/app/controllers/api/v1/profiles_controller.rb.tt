@@ -59,7 +59,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   private
 
   def user_params
-    params.require(:profile).permit(:email, :password, :password_confirmation, <%= user_field_names.join(", ") -%> <%= ", :avatar_contents, :avatar_name" if enable_user_avatar? -%> )
+    params.require(:profile).permit(:email, :name, :password, :password_confirmation, <%= (user_field_names.join(", ") + ", ") unless user_field_names.nil? -%> <%= " :avatar_contents, :avatar_name" if enable_user_avatar? -%> )
   end
 
   def device_params

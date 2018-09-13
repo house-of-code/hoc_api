@@ -10,7 +10,7 @@ Trestle.resource(:users) do
     <% if enable_user_avatar? -%>
     column :avatar do |u| image_tag(u.avatar_url, size: "30x30") unless u.avatar_url.nil? end
     <% end -%>
-    column :name if User.column_names.include? 'name'
+    column :name
     column :email
     column :ios_devices do |u| u.ios_devices.count end
     column :android_devices do |u| u.android_devices.count end
@@ -21,17 +21,17 @@ Trestle.resource(:users) do
 
   form do |user|
     tab :user do
-      text_field :name if User.column_names.include? 'name'
+      text_field :name
       email_field :email
       row do
         col(xs: 6) { password_field :password }
         col(xs: 6) { password_field :password_confirmation }
       end
       <% if enable_user_avatar? -%>
-      form_group :avatar, help: "Upload a file less than 2MB." do
-        concat(image_tag(instance.avatar_url, size: "100x100")) unless instance.avatar_url.nil?
+      form_group :avatar, help: "Upload a image file" do
+        concat(image_tag(instance.avatar_url, size: "100x100")) if instance.persisted? && instance.avatar_url
         raw_file_field :avatar
-        check_box :remove_avatar if instance.avatar_url
+        check_box :remove_avatar if instance.persisted? && instance.avatar_url
       end
       <% end -%>
     end
