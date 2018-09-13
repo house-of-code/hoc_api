@@ -105,7 +105,7 @@ end
 def add_template_repository_to_source_path
   if __FILE__ =~ %r{\Ahttps?://}
     require "tmpdir"
-    source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
+    source_paths.unshift(tempdir = Dir.mktmpdir("hoc_api-"))
     at_exit { FileUtils.remove_entry(tempdir) }
     git clone: [
       "--quiet",
@@ -113,9 +113,9 @@ def add_template_repository_to_source_path
       tempdir
     ].map(&:shellescape).join(" ")
 
-    if (branch = __FILE__[%r{rails-template/raw/(.+)/hoc_api_template.rb}, 1])
-      Dir.chdir(tempdir) { git checkout: branch }
-    end
+    if (branch = __FILE__[%r{hoc_api/(.+)/template.rb}, 1])
+     Dir.chdir(tempdir) { git checkout: branch }
+   end
   else
      source_paths.unshift(File.dirname(__FILE__))
   end
