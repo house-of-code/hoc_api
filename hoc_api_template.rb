@@ -94,6 +94,11 @@ def run_template
     apply("applies/git_setup.rb")
 
     info "Installation finished."
+
+    info "Next steps:"
+    info "* Generate resources with the hoc_utils generator. Eg."
+    say("\trails g hoc_utils:api_scaffold RESOURCE_NAME field[:type][:index] field[:type][:index]", :bold)
+
   end
 end
 
