@@ -51,6 +51,7 @@ This template can be used for creating a new app with an api defined for authent
 
 ## Usage
 
+### By cloning
 1. Clone this repository somewhere on your machine.
 2. Create an api with the name _app_name_ with this command:
 
@@ -58,14 +59,18 @@ This template can be used for creating a new app with an api defined for authent
 
         $ rails new app_name --api -d postgresql -q -m path/to/repo/hoc_api_template.rb    
 
+### Directly from github
 
+        $ rails new app_name --api -d postgresql -q -m https://raw.githubusercontent.com/house-of-code/hoc_api/master/hoc_api_template.rb  
 
 This will create a new rails app with postgresql as database using the hoc_api_template.rb.
+
 ### Explain please...
 * `rails new app_name` will create an app with the name app_name
 * `--api` normally means that it is gonna be an api only app. But not in this case; It just makes sure on the most important things are added to the project
+* `-d postgresql` says that we want to use PostgreSQL. And that we want!
 * The `-q` option hide the very verbose output from rails generation.
-* The `-m path/to/repo/hoc_api_template.rb` option tells to apply the this template.
+* The `-m URL/PATH` option tells to apply the this template.
 
 ### Template applying.
 
