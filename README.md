@@ -35,6 +35,7 @@ This template can be used for creating a new app with an api defined for authent
   A modern, responsive admin framework for Ruby on Rails
 
 ### Development tools
+* [hoc_utils] Utilities for HoC API
 * [rspec-rails]
   rspec-rails is a testing framework for Rails 3.x, 4.x and 5.x.
 * [annotate]
@@ -100,3 +101,4 @@ Look into the `config` directory and check files if they need to be tweeked... E
 [aws-sdk-s3]:https://github.com/aws/aws-sdk-ruby
 [acts_as_hoc_avatarable]:https://github.com/house-of-code/acts_as_hoc_avatarable
 [slim-rails]:https://github.com/slim-template/slim-rails
+[hoc_utils]:https://github.com/house-of-code/hoc_utils

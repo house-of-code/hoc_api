@@ -34,9 +34,16 @@ end
 gem_group :development, :test do
   # Testing
   gem "rspec-rails"
+  # Annotate models
   gem "annotate", ">= 2.5.0"
+  # Awesomeness
   gem "awesome_print"
+  # Analysis
   gem "rubocop", ">= 0.58.0", require: false
+  # More readable errors
   gem "better_errors"
+  # Find security holes
   gem "brakeman", require: false
+  # The master utility for HoC API
+  gem 'hoc_utils'
 end

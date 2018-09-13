@@ -151,6 +151,7 @@ end
 # User field names as symbols
 def user_field_names
   return @user_field_names if defined? @user_field_names
+  return nil if profile_extras.nil?
   @user_field_names = splitted_user_fields.map { |field|
     ":#{field[:name]}"
   }

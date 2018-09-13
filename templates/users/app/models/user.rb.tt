@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   acts_as_hoc_avatarable
   <% end -%>
   acts_as_api
-  <%= api_accessible("basic", [":id", ":email", ":name", ":created_at", ":updated_at"] + user_field_names + ([":avatar_url"] if enable_user_avatar?)) -%>
+  <%= api_accessible("basic", [":id", ":email", ":name", ":created_at", ":updated_at"] + (user_field_names ||= []) + ([":avatar_url"] if enable_user_avatar?)) -%>
 
   <% if install_notifications? -%>
   # This method get called if a hoc notification is received
