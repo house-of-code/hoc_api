@@ -125,7 +125,7 @@ RSpec.configure do |config|
         },
         notifications: {
           description: 'An array of notifications',
-          type: 'object'
+          type: 'object',
           properties: {
             meta: { "$ref": "#/definitions/meta" },
             notifications: { type: 'array', items: { "$ref": "#/definitions/notification" },},
