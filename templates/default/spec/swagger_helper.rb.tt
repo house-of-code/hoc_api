@@ -24,6 +24,20 @@ RSpec.configure do |config|
       paths: {},
       definitions: {
         # add your definitions here.
+        meta: {
+          description: 'Meta data for a collection',
+          type: 'object',
+          properties: {
+            current: { type: 'integer', description: 'Current page' },
+            previous: { type: 'integer', description: 'Previous page' },
+            next: { type: 'integer', description: 'Next page' },
+            per_page: { type: 'integer', description: 'Number of elements per page' },
+            pages: { type: 'integer', description: 'Total count of pages' },
+            count: { type: 'integer', description: 'Total count of elements' },
+          },
+        },
+
+
         <% if install_user? -%>
         profile_input: {
           description: 'This model contains information for creating an user',
@@ -59,7 +73,7 @@ RSpec.configure do |config|
           type: 'object',
           properties: {
             token: { type: 'string' },
-            platform: { type: 'string', description: 'ios or android' },
+            platform: { type: 'string', enum: ['ios', 'android]'], description: 'The platform' },
             platform_version: { type: 'string', description: 'eg. 9.3' },
             push_environment: { type: 'string', description: 'production or debug' },
           },
@@ -111,8 +125,11 @@ RSpec.configure do |config|
         },
         notifications: {
           description: 'An array of notifications',
-            type: 'array',
-            items: { "$ref": "#/definitions/notification" },
+          type: 'object'
+          properties: {
+            meta: { "$ref": "#/definitions/meta" },
+            notifications: { type: 'array', items: { "$ref": "#/definitions/notification" },},
+          }
         },
         <% end -%>
 

@@ -7,7 +7,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     @current_user = User.new(user_params)
     if @current_user.save
       @authentication_token = @current_user.authentication_token
-      render_result({authentication_token: @authentication_token, user: @current_user.as_api_response(:basic) }, :created)
+      render_result({authentication_token: @authentication_token, profile: @current_user.as_api_response(:basic) }, :created)
     else
       render_error(@current_user.errors.full_messages.first)
     end
@@ -15,13 +15,13 @@ class Api::V1::ProfilesController < Api::V1::ApiController
 
   # GET /api/v1/profile/
   def show
-    render_result(@current_user.as_api_response(:basic))
+    render_result(profile: @current_user.as_api_response(:basic))
   end
 
   # PATCH /api/v1/profile/
   def update
     if @current_user.update(user_params)
-      render_result(@current_user.as_api_response(:basic))
+      render_result(profile: @current_user.as_api_response(:basic))
     else
       render_error(@current_user.errors.full_messages.first)
     end
@@ -49,13 +49,13 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   # POST /api/v1/profile/set_avatar
   def set_avatar
     if @current_user.update!(avatar_contents: user_params[:avatar_contents], avatar_name: user_params[:avatar_name])
-
       render_nothing
     else
       render_error(@current_user.errors.full_messages.first)
     end
   end
   <% end -%>
+  
   private
 
   def user_params

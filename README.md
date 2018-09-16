@@ -33,7 +33,8 @@ This template can be used for creating a new app with an api defined for authent
   slim-rails provides Slim generators for Rails 3+. It was based on haml-rails and it does basically the same:
 * [trestle]
   A modern, responsive admin framework for Ruby on Rails
-
+* [kaminari]
+   Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
 ### Development tools
 * [hoc_utils] Utilities for HoC API
 * [rspec-rails]
@@ -107,3 +108,4 @@ Look into the `config` directory and check files if they need to be tweeked... E
 [acts_as_hoc_avatarable]:https://github.com/house-of-code/acts_as_hoc_avatarable
 [slim-rails]:https://github.com/slim-template/slim-rails
 [hoc_utils]:https://github.com/house-of-code/hoc_utils
+[kaminari]:https://github.com/kaminari/kaminari

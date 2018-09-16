@@ -1,10 +1,11 @@
-class Api::V1::ApiController < ApplicationController
+class Api::V1::ApiController < ActionController::API
   # includes
   include ActsAsApi::Rendering
+  include Orderable
   <% if enable_pundit? -%>
   include Pundit
   <% end -%>
-  
+
   # before_actions
   <% if install_user? -%>
   before_action :authenticate_request
@@ -22,6 +23,26 @@ class Api::V1::ApiController < ApplicationController
     render json: json, status: status
   end
 
+  def render_collection(scope, name = :collection, render_key = :basic, default_per_page = 20)
+    if params.has_key :all
+      collection = scope
+      result = {
+        meta: {
+          current:  1,
+          previous: nil,
+          next:     nil,
+          per_page: collection.count,
+          pages:    1,
+          count:    collection.count
+        }
+      }
+      result[name] = collection.as_api_response(render_key)
+      render_result(result)
+    else
+      render_result(paginate(scope, name, render_key, default_per_page))
+    end
+  end
+
   def render_nothing(status = :ok)
     render json: {}, status: status
   end
@@ -36,6 +57,24 @@ class Api::V1::ApiController < ApplicationController
 
   def render_error(err, status = :unprocessable_entity)
     render json: { status: status, error: err }, status: status
+  end
+
+  def paginate(scope, name = :collection, render_key = :basic, default_per_page = 20)
+    collection = scope.page(params[:page]).per((params[:per_page] || default_per_page).to_i)
+
+    current, total, per_page = collection.current_page, collection.num_pages, collection.limit_value
+    result = {
+      meta: {
+        current:  current,
+        previous: (current > 1 ? (current - 1) : nil),
+        next:     (current == total ? nil : (current + 1)),
+        per_page: per_page,
+        pages:    total,
+        count:    collection.total_count
+      },
+    }
+    result[name] = collection.as_api_response(render_key)
+    return result
   end
 
   <% if install_user? -%>

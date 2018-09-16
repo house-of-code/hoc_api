@@ -27,6 +27,9 @@ gem 'rack-cors' if enable_cors?
 # Trestle admin interface
 gem 'trestle' if enable_admin?
 
+# Pagination
+gem 'kaminari'
+
 if enable_user_avatar?
   gem 'acts_as_hoc_avatarable'
   gem 'aws-sdk-s3', require: false
